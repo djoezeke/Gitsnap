@@ -4,23 +4,28 @@ import os
 import pickle
 
 
-def revert_to_snap(hash_digest):
+def revert(hash_digest):
     """revert_to_snap_shot"""
-    snap_shot_path = f".snap/{hash_digest}"
+
+    snap_shot_path = f".snap/hook/{hash_digest}"
     snap_shot_data = None
+    shot_file_list = []
 
     if not os.path.exists(snap_shot_path):
         print("SnapShot does not exits.")
         return
 
+    with open(".snap/index", "rb") as f:
+        shot_file_list = pickle.load(f)
+
     with open(snap_shot_path, "rb") as f:
         snap_shot_data = pickle.load(f)
 
-    for file_path, content in snap_shot_data["files"].items():
-        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    for file in shot_file_list:
+        # os.makedirs(os.path.dirname(file), exist_ok=True)
 
-        with open(file_path, "wb") as f:
-            f.write(content)
+        with open(file, "wb") as f:
+            f.write(snap_shot_data["files"][file])
 
     current_files = set()
 
@@ -34,7 +39,7 @@ def revert_to_snap(hash_digest):
         for file in files:
             current_files.add(os.path.join(root, file))
 
-    snap_shot_files = set(snap_shot_data["file_list"])
+    snap_shot_files = set(shot_file_list)
     files_to_delete = current_files - snap_shot_files
 
     for file_path in files_to_delete:

@@ -13,19 +13,44 @@ class SnapShot:
 
     def add(self, files: list[str]):
         """add"""
-        with open(".snap/index", "a", encoding="utf-8") as f:
-            pickle.dump(files, f)
+        index_files: list = []
+
+        with open(".snap/index", "rb") as f:
+            try:
+                index_files = pickle.load(f)
+            except EOFError:
+                pass
+
+        for file in files:
+            if file not in index_files:
+                index_files.append(file)
+
+        with open(".snap/index", "wb") as f:
+            pickle.dump(index_files, f)
+
+    def remove(self, files: list[str]):
+        """add"""
+        index_files: list = []
+
+        with open(".snap/index", "rb") as f:
+            try:
+                index_files = pickle.load(f)
+            except EOFError:
+                pass
+
+        for file in files:
+            if file in index_files:
+                index_files.remove(file)
+
+        with open(".snap/index", "wb") as f:
+            pickle.dump(index_files, f)
 
     def commit(self, message: str):
         """commit"""
         snap_shot_data = {"files": {}}
         snap_shot_hash = hashlib.sha256()
 
-        # write commit message
-        with open(f".snap/info/{snap_shot_hash}", "w", encoding="utf-8") as f:
-            f.write(message)
-
-        with open(".snap/index", "r", encoding="utf-8") as f:
+        with open(".snap/index", "rb") as f:
             files = pickle.load(f)
 
         for file in files:
@@ -40,6 +65,10 @@ class SnapShot:
 
         hash_digest = snap_shot_hash.hexdigest()
         snap_shot_data["file_list"] = list(snap_shot_data["files"].keys())
+
+        # write commit message
+        with open(f".snap/info/{hash_digest}", "w+", encoding="utf-8") as f:
+            f.write(message)
 
         with open(f".snap/hook/{hash_digest}", "wb") as f:
             pickle.dump(snap_shot_data, f)

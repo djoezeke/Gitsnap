@@ -1,9 +1,9 @@
 """Snap"""
 
-from initailize import SnapInit
-from commit import SnapShot
+from snapinit import SnapInit
+from snapshot import SnapShot
 from revert import revert
-from branch import Branch
+from snapbranch import Branch
 
 
 class SnapGit:

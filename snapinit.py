@@ -30,6 +30,11 @@ class SnapInit:
         with open(".snap/config", "w", encoding="utf-8") as f:
             f.write("")
 
+    def create_head_file(self):
+        """make_folder"""
+        with open(".snap/head", "w", encoding="utf-8") as f:
+            f.write("")
+
     def create_index_file(self):
         """make_folder"""
         with open(".snap/index", "w", encoding="utf-8") as f:
@@ -40,12 +45,13 @@ class SnapInit:
         with open(".snap/description", "w", encoding="utf-8") as f:
             f.write(description)
 
-    def init(self, description=" "):
+    def init(self, description=""):
         """init"""
         self.make_snap_folder()
         self.make_info_folder()
         self.make_hook_folder()
         self.make_branch_folder()
-        self.create_config_file()
+        self.create_head_file()
         self.create_index_file()
+        self.create_config_file()
         self.create_descri_file(description)

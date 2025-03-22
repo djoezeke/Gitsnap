@@ -3,6 +3,17 @@
 from initailize import SnapInit
 from commit import SnapShot
 from revert import revert
+from branch import Branch
+
+
+class SnapGit:
+    """SnapGit"""
+
+    def __init__(self):
+        self.branches: list[Branch] = []
+
+    def add(self):
+        """add"""
 
 
 if __name__ == "__main__":

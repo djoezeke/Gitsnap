@@ -21,6 +21,10 @@ class SnapInit:
         """make_folder"""
         os.makedirs(".snap/hook", exist_ok=True)
 
+    def make_branch_folder(self):
+        """make_folder"""
+        os.makedirs(".snap/branch", exist_ok=True)
+
     def create_config_file(self):
         """make_folder"""
         with open(".snap/config", "w", encoding="utf-8") as f:
@@ -41,6 +45,7 @@ class SnapInit:
         self.make_snap_folder()
         self.make_info_folder()
         self.make_hook_folder()
+        self.make_branch_folder()
         self.create_config_file()
         self.create_index_file()
         self.create_descri_file(description)

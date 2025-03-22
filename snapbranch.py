@@ -1,20 +1,18 @@
 """Branches"""
 
-import os
 import time
-import pickle
 
 
 class Branch:
-    "Branch"
+    """Branch"""
 
     def __init__(self, name="", owner=""):
-        self.name = name
-        self.owner = owner
-        self.created = time.ctime(time.time())
-        self.last_edited = time.ctime(time.time())
-        self.last_commit = time.ctime(time.time())
-        self.commits = []
+        self.name: str = name
+        self.owner: str = owner
+        self.created: str = time.ctime(time.time())
+        self.last_edited: str = time.ctime(time.time())
+        self.last_commit: str = time.ctime(time.time())
+        self.commits: list[str] = []
 
     def rename_branch(self, name):
         """add"""
@@ -23,25 +21,38 @@ class Branch:
 
     def load_commits(self):
         """add"""
-        with open(".snap/index", "rb") as f:
+        commits: list[str] = []
+        with open(f".snap/branch/{self.name}", "r", encoding="utf-8") as f:
             try:
-                files = pickle.load(f)
+                commits = f.readlines()
             except EOFError:
-                pass
-
-        for file in files[self.name]:
-
-            if not os.path.exists(file):
-                return
+                return commits
+        return commits
 
     def add_commit(self, commit_hash):
         """add"""
         self.last_edited = time.ctime(time.time())
-        self.commits.append(commit_hash)
+
+        if commit_hash not in self.commits:
+            self.commits.append(commit_hash)
+
+        with open(f".snap/branch/{self.name}", "w", encoding="utf-8") as f:
+            try:
+                f.writelines(self.commits)
+            except EOFError:
+                pass
 
     def remove_commit(self, commit_hash):
-        """add"""
+        """remove_commit"""
+
         self.last_edited = time.ctime(time.time())
+
         for commit in self.commits:
             if commit == commit_hash:
                 self.commits.remove(commit_hash)
+
+        with open(f".snap/branch/{self.name}", "w", encoding="utf-8") as f:
+            try:
+                f.writelines(self.commits)
+            except EOFError:
+                pass

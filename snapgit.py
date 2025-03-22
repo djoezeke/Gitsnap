@@ -2,7 +2,6 @@
 
 from snapinit import SnapInit
 from snapshot import SnapShot
-from revert import revert
 from snapbranch import Branch
 
 
@@ -21,7 +20,7 @@ if __name__ == "__main__":
 
     command = sys.argv[1]
     snap = SnapInit()
-    shot = SnapShot()
+    shot = SnapShot("")
 
     if command == "init":
         snap.init("SnapGit")
@@ -30,6 +29,6 @@ if __name__ == "__main__":
     elif command == "commit":
         shot.commit(sys.argv[2])
     elif command == "revert":
-        revert(sys.argv[2])
+        shot.revert(sys.argv[2])
     else:
         print("Unknow Command")

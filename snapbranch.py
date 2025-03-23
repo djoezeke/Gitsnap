@@ -11,16 +11,35 @@ class Branch:
     def __init__(self, name=""):
         self.name: str = name
         self.snapshot = SnapShot(self.name)
-        self.created: str = time.ctime(time.time())
-        self.last_edited: str = time.ctime(time.time())
-        self.last_commit: str = time.ctime(time.time())
-        self.commits: list[str] = []
-        self.branch_init()
+
+        if self.branch_exits():
+            self.created: str = self.branch_info()[0]
+            self.last_updated: str = self.branch_info()[1]
+            self.commits: list[str] = self.load_commits()
+        else:
+            self.created: str = time.ctime(time.time())
+            self.last_updated: str = time.ctime(time.time())
+            self.branch_init()
+
+    def branch_exits(self):
+        """add"""
+        return os.path.exists(os.path.join(".snap", "branch", self.name))
 
     def branch_init(self):
         """add"""
         with open(f".snap/branch/{self.name}", "w", encoding="utf-8") as f:
-            f.write("")
+            f.writelines([self.created, "\n", self.last_updated, "\n"])
+
+    def branch_info(self):
+        """add"""
+
+        created_updated: list = []
+
+        with open(f".snap/branch/{self.name}", "r", encoding="utf-8") as f:
+            info = f.readlines()
+            created_updated = info[:2]
+
+        return created_updated
 
     def commit_branch(self, message):
         """add"""
@@ -43,22 +62,24 @@ class Branch:
 
     def rename_branch(self, name):
         """add"""
-        self.last_edited = time.ctime(time.time())
+        self.last_updated = time.ctime(time.time())
         self.name = name
 
     def load_commits(self):
         """add"""
+
         commits: list[str] = []
         with open(f".snap/branch/{self.name}", "r", encoding="utf-8") as f:
             try:
-                commits = f.readlines()
+                commits = f.readlines()[2:]
             except EOFError:
                 return commits
         return commits
 
     def add_commit(self, commit_hash):
         """add"""
-        self.last_edited = time.ctime(time.time())
+
+        self.last_updated = time.ctime(time.time())
 
         if commit_hash not in self.commits:
             self.commits.append(commit_hash)
@@ -72,7 +93,7 @@ class Branch:
     def remove_commit(self, commit_hash):
         """remove_commit"""
 
-        self.last_edited = time.ctime(time.time())
+        self.last_updated = time.ctime(time.time())
 
         for commit in self.commits:
             if commit == commit_hash:

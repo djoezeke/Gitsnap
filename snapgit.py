@@ -16,7 +16,7 @@ class SnapGit:
         """add"""
         snapinit = SnapInit()
         snapinit.init(description)
-        self.branches.append(Branch("main", "zeke"))
+        self.branches.append(Branch("main"))
         self.checkout("main")
 
     def get_branch(self):

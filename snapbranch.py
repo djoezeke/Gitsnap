@@ -2,6 +2,7 @@
 
 import os
 import time
+import pickle
 from snapshot import SnapShot
 
 
@@ -30,6 +31,19 @@ class Branch:
         with open(f".snap/branch/{self.name}", "w", encoding="utf-8") as f:
             f.writelines([self.created, "\n", self.last_updated, "\n"])
 
+        index: dict[str, list[str]] = {}
+
+        with open(".snap/index", "rb") as f:
+            try:
+                index = pickle.load(f)
+            except EOFError:
+                return
+
+        index[self.name] = []
+
+        with open(".snap/index", "wb") as f:
+            pickle.dump(index, f)
+
     def branch_info(self):
         """add"""
 
@@ -40,6 +54,16 @@ class Branch:
             created_updated = info[:2]
 
         return created_updated
+
+    def load_commits(self):
+        """add"""
+
+        commits: list[str] = []
+        with open(f".snap/branch/{self.name}", "r+", encoding="utf-8") as f:
+            branch_commits = f.readlines()
+            commits = branch_commits[2:]
+
+        return commits
 
     def commit_branch(self, message):
         """add"""
@@ -65,17 +89,6 @@ class Branch:
         self.last_updated = time.ctime(time.time())
         self.name = name
 
-    def load_commits(self):
-        """add"""
-
-        commits: list[str] = []
-        with open(f".snap/branch/{self.name}", "r", encoding="utf-8") as f:
-            try:
-                commits = f.readlines()[2:]
-            except EOFError:
-                return commits
-        return commits
-
     def add_commit(self, commit_hash):
         """add"""
 
@@ -86,7 +99,16 @@ class Branch:
 
         with open(f".snap/branch/{self.name}", "w", encoding="utf-8") as f:
             try:
-                f.writelines(self.commits)
+                f.writelines(
+                    list(
+                        [
+                            self.created,
+                            self.last_updated,
+                            "\n",
+                            *["\n" for commit in self.commits],
+                        ]
+                    )
+                )
             except EOFError:
                 pass
 

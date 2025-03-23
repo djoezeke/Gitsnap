@@ -12,9 +12,11 @@ class SnapShot:
     def __init__(self, branch):
         self.branch = branch
         self.created = time.ctime(time.time())
+        self.index = []
 
     def add(self, files: list[str]):
         """add"""
+
         index: dict[str, list[str]] = {}
         branch_index_files: list[str] = []
 
@@ -35,6 +37,7 @@ class SnapShot:
 
     def remove(self, files: list[str]):
         """add"""
+
         index: dict[str, list[str]] = {}
         branch_index_files: list[str] = []
 
@@ -81,9 +84,11 @@ class SnapShot:
         hash_digest = snap_shot_hash.hexdigest()
         snap_shot_data["file_list"] = list(snap_shot_data["files"].keys())
 
+        created = time.ctime(time.time())
+
         # write commit message
         with open(f".snap/info/{hash_digest}", "w+", encoding="utf-8") as f:
-            f.write(message)
+            f.writelines([created, "\n", message])
 
         with open(f".snap/hook/{hash_digest}", "wb") as f:
             pickle.dump(snap_shot_data, f)

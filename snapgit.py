@@ -19,6 +19,10 @@ class SnapGit:
         self.branches.append(Branch("main"))
         self.checkout("main")
 
+    def new_branch(self, name):
+        """add"""
+        self.branches.append(Branch(name))
+
     def get_branch(self):
         """add"""
         branch = ""
@@ -35,7 +39,6 @@ class SnapGit:
 
         for _, _, files in os.walk(os.path.join(".", ".snap", "branch"), topdown=True):
             for file in files:
-                print(file)
                 branches.append(Branch(file))
 
         return branches
@@ -76,7 +79,11 @@ if __name__ == "__main__":
     if command == "init":
         snap.init("SnapGit")
     elif command == "add":
-        snap.add(sys.argv[2:])
+        snap.add(list(sys.argv[2:]))
+    elif command == "branch":
+        snap.new_branch(sys.argv[2])
+    elif command == "checkout":
+        snap.checkout(sys.argv[2])
     elif command == "commit":
         snap.commit(sys.argv[2])
     elif command == "revert":

@@ -2,7 +2,6 @@
 
 import os
 
-
 class SnapInit:
     "SnapInit"
 

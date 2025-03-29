@@ -1,8 +1,8 @@
 """Snap"""
 
 import os
-from snapinit import SnapInit
-from snapbranch import Branch
+from snap.init import SnapInit
+from snap.branch import Branch
 
 
 class SnapGit:

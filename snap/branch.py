@@ -3,7 +3,7 @@
 import os
 import time
 import pickle
-from snapshot import SnapShot
+from snap.shot import SnapShot
 
 
 class Branch:

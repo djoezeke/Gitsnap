@@ -1,5 +1,7 @@
+"""__main__"""
+
 import argparse
-from snap.snapgit import SnapGit
+from snapgit.snapgit import SnapGit
 
 
 def main(command=None):
@@ -7,8 +9,8 @@ def main(command=None):
 
     parser = argparse.ArgumentParser(
         prog="SnapGit",
-        description="Version Control System",
-        usage="git [-v | --version] [-h | --help] <command> [<args>]",
+        description="SnapGit Version Control System",
+        usage="snap [-v | --version] [-h | --help] <command> [<args>]",
     )
 
     # These are common Git commands used in various situations:

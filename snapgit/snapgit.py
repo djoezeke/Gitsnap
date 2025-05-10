@@ -1,8 +1,8 @@
-"""Snap"""
+"""SnapGit Class"""
 
 import os
-from snap.init import SnapInit
-from snap.branch import Branch
+from snapgit.snapfunc import SnapInit
+from snapgit.snapbranch import Branch
 
 
 class SnapGit:
@@ -68,5 +68,3 @@ class SnapGit:
         for branch in self.branches:
             if branch.name == self.branch:
                 branch.revert_branch(hash_digest)
-
-

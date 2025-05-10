@@ -1,4 +1,4 @@
-"""Commit"""
+"""SnapShot Class"""
 
 import os
 import time

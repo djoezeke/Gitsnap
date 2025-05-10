@@ -1,8 +1,8 @@
 """SnapGit Class"""
 
 import os
-from snapgit.snapfunc import SnapInit
-from snapgit.snapbranch import Branch
+from snapgit.snapbasic import SnapInit
+from snapgit.snapbranch import SnapBranch
 
 
 class SnapGit:
@@ -10,18 +10,18 @@ class SnapGit:
 
     def __init__(self):
         self.branch: str = self.get_branch()
-        self.branches: list[Branch] = self.load_branches()
+        self.branches: list[SnapBranch] = self.load_branches()
 
     def init(self, description):
         """add"""
         snapinit = SnapInit()
         snapinit.init(description)
-        self.branches.append(Branch("main"))
+        self.branches.append(SnapBranch("main"))
         self.checkout("main")
 
     def new_branch(self, name):
         """add"""
-        self.branches.append(Branch(name))
+        self.branches.append(SnapBranch(name))
 
     def get_branch(self):
         """add"""
@@ -35,11 +35,11 @@ class SnapGit:
 
     def load_branches(self):
         """add"""
-        branches: list[Branch] = []
+        branches: list[SnapBranch] = []
 
         for _, _, files in os.walk(os.path.join(".", ".snap", "branch"), topdown=True):
             for file in files:
-                branches.append(Branch(file))
+                branches.append(SnapBranch(file))
 
         return branches
 

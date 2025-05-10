@@ -6,8 +6,8 @@ import pickle
 from snapgit.snapshot import SnapShot
 
 
-class Branch:
-    """Branch"""
+class SnapBranch:
+    """SnapBranch"""
 
     def __init__(self, name=""):
         self.name: str = name
